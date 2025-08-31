@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -41,7 +42,32 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryDto> getAllCategories() {
 
-        
-        return List.of();
+        List<Category> categories = categoryRepository.findAll();
+        return categories.stream()
+                .map((category) -> CategoryMapper.mapToCategoryDto(category))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public CategoryDto updateCategory(Long categoryId, CategoryDto categoryDto) {
+
+        // get category entity from the database by category id
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(()-> new RuntimeException("Category not found with id; " + categoryId));
+
+        // update the category entity object and save  to database table
+        category.setName(categoryDto.name());
+        Category updatedCategory = categoryRepository.save(category); // perform update operation
+        return CategoryMapper.mapToCategoryDto(updatedCategory);
+    }
+
+    @Override
+    public void deleteCategory(long categoryId) {
+
+        // check if a category with given id is exists or not
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(()-> new RuntimeException("Category not found with id: " + categoryId));
+
+        categoryRepository.delete(category);
     }
 }
