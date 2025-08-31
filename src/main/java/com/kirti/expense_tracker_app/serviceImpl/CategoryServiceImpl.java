@@ -2,6 +2,7 @@ package com.kirti.expense_tracker_app.serviceImpl;
 
 import com.kirti.expense_tracker_app.dto.CategoryDto;
 import com.kirti.expense_tracker_app.entity.Category;
+import com.kirti.expense_tracker_app.exceptions.ResourceNotFoundException;
 import com.kirti.expense_tracker_app.mapper.CategoryMapper;
 import com.kirti.expense_tracker_app.repository.CategoryRepository;
 import com.kirti.expense_tracker_app.service.CategoryService;
@@ -34,7 +35,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto getCategoryById(Long categoryId) {
 
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(()-> new RuntimeException("Category not found with id: " + categoryId));
+                .orElseThrow(()-> new ResourceNotFoundException("Category not found with id: " + categoryId));
 
         return CategoryMapper.mapToCategoryDto(category);
     }
@@ -53,7 +54,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         // get category entity from the database by category id
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(()-> new RuntimeException("Category not found with id; " + categoryId));
+                .orElseThrow(()-> new ResourceNotFoundException("Category not found with id; " + categoryId));
 
         // update the category entity object and save  to database table
         category.setName(categoryDto.name());
@@ -66,7 +67,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         // check if a category with given id is exists or not
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(()-> new RuntimeException("Category not found with id: " + categoryId));
+                .orElseThrow(()-> new ResourceNotFoundException("Category not found with id: " + categoryId));
 
         categoryRepository.delete(category);
     }
