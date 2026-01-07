@@ -187,11 +187,6 @@ Contributing
 
 Feel free to fork this project, create pull requests, and contribute any enhancements or bug fixes. Please ensure all contributions are well-documented and include tests where applicable.
 
-License
-
-This project is licensed under the MIT License - see the LICENSE
- file for details.
-
 Optional Enhancements for the Future:
 
 Add authentication and authorization (JWT-based or OAuth).
